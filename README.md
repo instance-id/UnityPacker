@@ -2,11 +2,27 @@
 
 UnityPacker is a collection of a library and small command line tools that can create, unpack and inspect `UnityPackage` files without a Unity installation. It is great for automated builds of Unity tools.
 
+#### Now includes Yaml configuration support to assist with automation
+
 Usage is very simple:
 
+	./UnityPack config.yml
     ./UnityPack *directory to pack* *destination pack name*
     ./UnityUnpack *pack name* *directory to unpack to*
     
+#### Sample config.yml
+
+```yml
+project: 
+  - packagename: MyAsset
+    source: C:\unity\projects\MyAsset\Assets\MyAssetFiles
+    destination: E:\_unity\_projects\MyAsset\OutputFiles
+    rootdirectory: Assets/MyAssetFiles
+    ignoredextensions: []
+    ignoredfolders: []
+
+```
+
 For example:
 
     ./UnityPack . Package

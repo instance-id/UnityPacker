@@ -59,6 +59,7 @@ namespace UnityPacker
             {
                 sb.Append(t.ToString("X2"));
             }
+
             return sb.ToString();
         }
 
@@ -71,6 +72,7 @@ namespace UnityPacker
             {
                 c += r.Next(0, 128);
             }
+
             return c;
         }
 
@@ -112,13 +114,15 @@ namespace UnityPacker
         /// Generates a .unitypackage file from this package
         /// </summary>
         /// <param name="root">Root directory name, usually starts with Assets/</param>
-        public void GeneratePackage(string root = "Assets/")
+        /// <param name="destination">The output directory of the .unitypackage</param>
+        public void GeneratePackage(string root = "Assets/", string destination = "")
         {
             var tmpPath = Path.Combine(Path.GetTempPath(), "packUnity" + _name);
             if (Directory.Exists(tmpPath))
             {
                 Directory.Delete(tmpPath, true);
             }
+
             Directory.CreateDirectory(tmpPath);
 
             foreach (var file in _files)
@@ -145,12 +149,14 @@ namespace UnityPacker
 
                     writer.Write(root + altName.Replace(Path.DirectorySeparatorChar + "", "/"));
                 }
+
                 using (StreamWriter writer = new StreamWriter(Path.Combine(fdirpath, "asset.meta"))) // the meta file
                 {
                     var doc = new YamlDocument(file.Value.GetMeta());
                     var ys = new YamlStream(doc);
                     ys.Save(writer);
                 }
+
                 var fi = new FileInfo(Path.Combine(fdirpath, "asset.meta"));
                 using (var fs = fi.Open(FileMode.Open))
                 {
@@ -158,7 +164,7 @@ namespace UnityPacker
                 }
             }
 
-            CreateTarGZ(_name + ".unitypackage", tmpPath);
+            CreateTarGZ(_name + ".unitypackage", tmpPath, destination);
             Directory.Delete(tmpPath, true);
         }
 
@@ -253,8 +259,10 @@ namespace UnityPacker
                     {
                         stderr.WriteLine("Erroneous File In Package! {0}, {1}", assetPath, guid);
                     }
+
                     continue;
                 }
+
                 var file = new OnDiskFile(assetPath, diskPath, meta);
                 pack.PushFile(file);
             }
@@ -279,6 +287,7 @@ namespace UnityPacker
                     var ys = new YamlStream(doc);
                     ys.Save(writer);
                 }
+
                 var fi = new FileInfo(metaPath);
                 using (var fs = fi.Open(FileMode.Open))
                 {
@@ -287,9 +296,10 @@ namespace UnityPacker
             }
         }
 
-        private static void CreateTarGZ(string tgzFilename, string sourceDirectory)
+        private static void CreateTarGZ(string tgzFilename, string sourceDirectory, string destination)
         {
-            Stream outStream = File.Create(tgzFilename);
+            var path = destination == "" ? tgzFilename : Path.Combine(destination, tgzFilename);
+            Stream outStream = File.Create(path);
             Stream gzoStream = new GZipOutputStream(outStream);
             TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzoStream);
 
