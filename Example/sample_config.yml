@@ -1,7 +1,7 @@
-﻿project: 
-  - packagename: AboveAverageInspector
-    source: E:\_unity\_projects\AboveAverageInspector\Assets\instance.id
-    destination: E:\_unity\_projects\AboveAverageInspector\
-    rootdirectory: Assets/instance.id
+project: 
+  - packagename: MyAsset
+    source: C:\unity\projects\MyAsset\Assets\MyAssetFiles
+    destination: E:\_unity\_projects\MyAsset\OutputFiles
+    rootdirectory: Assets/MyAssetFiles
     ignoredextensions: []
     ignoredfolders: []
