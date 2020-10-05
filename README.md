@@ -1,5 +1,7 @@
 # UnityPacker
 
+# NOTE - Do NOT USE YET. Only *EXPORTING* has been tested. Importing has not been tested and may corrupt your project!! BACKUP YOUR PROJECT BEFORE ATTEMPTING ANYTHING.
+
 UnityPacker is a collection of a library and small command line tools that can create, unpack and inspect `UnityPackage` files without a Unity installation. It is great for automated builds of Unity tools.
 
 #### Now includes Yaml configuration support to assist with automation
